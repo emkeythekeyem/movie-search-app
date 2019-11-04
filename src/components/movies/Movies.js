@@ -4,7 +4,7 @@ function Movie({ movieData }) {
   return (
     <div>
       <div>
-         <img src={'https://image.tmdb.org/t/p/w185'+movieData.poster_path}></img> 
+         {/* <img src={'https://image.tmdb.org/t/p/w185'+movieData.poster_path}></img> */}
       </div>
       <div>{movieData.original_title}</div>
       <div>{movieData.release_date}</div>
@@ -33,6 +33,7 @@ class Movies extends React.Component {
       type: this.props.type || "",
       genre: this.props.genre || "",
       searchQuery: this.props.searchQuery || "",
+      dataRange : this.props.dataRange || "",
       moviesData: {}
     };
   }
@@ -42,27 +43,61 @@ class Movies extends React.Component {
     this.handleGetMovies()
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.type !== this.state.type) {
-      this.setState({ type: nextProps.type },() => this.handleGetMovies());
-    }
-    if (nextProps.genre !== this.state.genre) {
-      this.setState({ genre: nextProps.genre }, () =>this.handleGetMovies());
-    }
-    if (nextProps.searchQuery !== this.state.searchQuery) {
-      this.setState({ searchQuery: nextProps.searchQuery }, () =>this.handleGetMovies());
-    }
-    if (nextProps.dateRange !== this.state.dateRange) {
-      this.setState({ dateRange: nextProps.dateRange }, () =>this.handleGetMovies());
-    }
+  static getDerivedStateFromProps(props,state)
+  {
+      console.log(state.type)
+    if (props.type !== state.type) {
+        return { 
+                    type: props.type ,
+                    genre: props.genre || "",
+                    searchQuery: props.searchQuery || "",
+                    dataRange : props.dataRange || "",
+                    moviesData: {}
+                
+                };
+      }
+      if (props.genre !== state.genre) {
+        return { 
+                    type: props.type || "",
+                    genre: props.genre ,
+                    searchQuery: props.searchQuery || "",
+                    dataRange : props.dataRange || "",
+                    moviesData: {}
+                }
+      }
+      if (props.searchQuery !== state.searchQuery) {
+        return { 
+            
+                    type: props.type || "",
+                    genre: props.genre || "",
+                    searchQuery: props.searchQuery,
+                    dataRange : props.dataRange || "",
+                    moviesData: {}
+                
+                }
+      }
+      if (props.dateRange !== state.dateRange) {
+        return { 
+                    
+                    type: props.type || "",
+                    genre: props.genre || "",
+                    searchQuery: props.searchQuery || "",
+                    dateRange: props.dateRange,
+                    moviesData: {}
+                }
+      }
+       // No state update necessary
+    return null;
   }
+
+  
 
   handleGetMovies() {
     let _self = this;
     let searchURL = "";
     //https://developers.themoviedb.org/3/discover/movie-discover
     if (this.state.searchQuery)
-        searchURL = `https://api.themoviedb.org/3/search/movie?api_key=823bc48a87be98bc698e954c8002fb1e&query=${this.state.searchQuery}&page=1&include_adult=false`
+        searchURL = `https://api.themoviedb.org/3/search/movie?api_key=823bc48a87be98bc698e954c8002fb1e&query=${encodeURIComponent(this.state.searchQuery)}&page=1&include_adult=false`
     else
         searchURL = `https://api.themoviedb.org/3/discover/${this.state.type}?api_key=823bc48a87be98bc698e954c8002fb1e&with_keywords=${this.state.searchQuery}&with_genres=${this.state.genre}&sort_by=popularity.desc&include_adult=false&include_video=false&page=1`
 

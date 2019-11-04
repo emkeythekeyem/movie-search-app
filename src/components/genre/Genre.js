@@ -1,6 +1,7 @@
 import React from "react";
 
-let genresArray = [
+/*
+[
   "All",
   "Literary genres",
   "Absurdist",
@@ -38,12 +39,7 @@ let genresArray = [
   "References",
   "External links"
 ];
-
-const genreList = genresArray.map((genre) =>
-  <option value={genre} key={genre}>
-    {genre}
-  </option>
-);
+*/
 
 class Genre extends React.Component {
   constructor(props) {
@@ -52,18 +48,48 @@ class Genre extends React.Component {
     this.state = {
       // "DataSource" is some global data source
       type: "movie",
-      genre : "All"
+      genre : "All",
+      genres: []
     };
   }
 
+  async componentDidMount() {
+    {
+        try {
+          const response = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=823bc48a87be98bc698e954c8002fb1e&language=en-US`);
+          if (!response.ok) {
+            throw Error(response.statusText);
+          }
+          const json = await response.json();
+
+          this.setState({ genres: json.genres },() => console.log(json));
+        } catch (error) {
+          console.log(error);
+        }
+      }
+  }
+
   handleSelectType(e) {
+    console.log(e.target.value)
     this.setState({ genre : e.target.value });
   }
 
   render() {
     return (
       <select onChange={this.handleSelectType} value={this.state.genre}>
-        {genreList}
+          <option value="All">
+            All
+          </option>
+        {
+            this.state.genres.length > 0 ?
+            this.state.genres.map((genre,index) =>
+            <option value={genre.name} data-id={genre.id} key={genre.id+index}>
+                {genre.name}
+            </option>
+            )
+            :
+            "lol"
+        }
       </select>
     );
   }
