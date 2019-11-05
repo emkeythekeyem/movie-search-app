@@ -1,0 +1,46 @@
+@mixin breakpoint($point) {
+    @if $point==fulldesktop {
+       @media (min-width: 85em) {
+          @content ;
+       }
+    }
+ 
+    @if $point==desktop {
+       @media (min-width: 70em) {
+          @content ;
+       }
+    }
+ 
+    @else if $point==laptop {
+       @media (min-width: 64em) {
+          @content ;
+       }
+    }
+ 
+    @else if $point==tablet {
+       @media (min-width: 50em) {
+          @content ;
+       }
+    }
+ 
+    @else if $point==phablet {
+       @media (min-width: 37.5em) {
+          @content ;
+       }
+    }
+    @else if $point==mobileonly {
+       @media (max-width: 37.5em) {
+          @content ;
+       }
+    }
+    @else if $point==notTouchOnly {
+       @media (min-width: 801px) and (min-height: 481px) {
+          @content ;
+       }
+    }
+    @else if $point==touchonly {
+       @media (min-width: 800px) and (max-width: 800px) and (min-height: 480px) and (max-height: 480px) {
+          @content ;
+       }
+    }
+ }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import logo from "../../assets/images/logo.svg";
 import "./App.scss";
 import Genre from "../genre/Genre";
@@ -6,75 +6,53 @@ import Movies from "../movies/Movies";
 import Search from "../search/Search";
 import DateFilter from "../date/DateFilter";
 
+export default function App(props) {
+  const [type, setType] = useState("movie");
+  const [genre, setGenre] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [dateRange, setDateRange] = useState("");
 
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleSelectType = this.handleSelectType.bind(this);
-    this.handleSelectGenre = this.handleSelectGenre.bind(this);
-    this.handleSearchQuery = this.handleSearchQuery.bind(this);
-    this.handleDateRange = this.handleDateRange.bind(this);
-    this.state = {
-      // "DataSource" is some global data source
-      type: "movie",
-      genre: "",
-      searchQuery : "",
-      dateRange : ""
-    };
+  function handleSelectType(type) {
+    console.log(type)
+    //setType(type);
   }
 
-  handleSelectType(type) {
-    this.setState({ type });
-  }
-
-  handleSelectGenre(genre)
+  function handleSelectGenre(genre)
   {
-    this.setState({ genre });
+    setGenre(genre)
   }
 
-  handleSearchQuery(searchQuery)
+  function handleSearchQuery(searchQuery)
   {
-    console.log("changeeeeeeed sewarch "+searchQuery )
-    this.setState({ searchQuery : searchQuery });
+    console.log(searchQuery)
+    setSearchQuery(searchQuery)
   }
 
-  handleDateRange(dateRange)
+  function handleDateRange(dateRange)
   {
-    this.setState({ dateRange });
+    setDateRange(dateRange)
   }
 
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <ul>
-            <li onClick={() => this.handleSelectType("movie")}>Movies</li>
-            <li onClick={() => this.handleSelectType("tv")}>TV Shows</li>
-          </ul>
-        </header>
-        <div className="container">
-          <Genre onSelectGenre={this.handleSelectGenre}>
-
-          </Genre>
-          <Search onSelectSearch={this.handleSearchQuery}>
-
-          </Search>
-          <DateFilter onDateSelect={this.handleDateRange}>
-
-          </DateFilter>
-          <Movies 
-              type={this.state.type} 
-              genre={this.state.genre} 
-              searchQuery={this.state.searchQuery} 
-              dateRange={this.state.dateRange}
-          >
-
-          </Movies>
-        </div>
+  return (
+    <div className="App">
+      <header className="App-header">
+        <ul>
+          <li onClick={() => handleSelectType("movie")}>Movies</li>
+          <li onClick={() => handleSelectType("tv")}>TV Shows</li>
+        </ul>
+      </header>
+      <div className="container">
+        <Genre onSelectGenre={handleSelectGenre}></Genre>
+        <Search onSelectSearch={handleSearchQuery}></Search>
+        <DateFilter onDateSelect={handleDateRange}></DateFilter>
+        <Movies
+          type={type}
+          genre={genre}
+          searchQuery={searchQuery}
+          dateRange={dateRange}
+        ></Movies>
       </div>
-    );
-  }
+    </div>
+  );
 }
-
-export default App;

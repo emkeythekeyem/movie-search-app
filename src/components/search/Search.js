@@ -1,25 +1,17 @@
 import React from "react";
 
-class Search extends React.Component {
-    constructor(props)
-    {
-        super(props)
-        this.handleSendQuery = this.handleSendQuery.bind(this);
-    }
+export default  function Search(props){
 
-    handleSendQuery(e)
+    function handleSendQuery(e)
     {
-        this.props.onSelectSearch(e.target.value)
+        props.onSelectSearch(e.target.value)
     }
-
-    render() {
-        return (
-            <div>
-                <label>Title</label>
-                <input type="text" onChange={this.handleSendQuery} />
-            </div>
-        );
-      }
+    
+    return (
+        <div>
+            <label>Title</label>
+            <input type="text" onChange={handleSendQuery} />
+        </div>
+    );
+    
 }
-
-export default Search;

@@ -1,24 +1,31 @@
 import React from "react";
+import "./Movies.scss";
+
+
 
 function Movie({ movieData }) {
   return (
-    <div>
-      <div>
-         {/* <img src={'https://image.tmdb.org/t/p/w185'+movieData.poster_path}></img> */}
+    <div className="movie-card">
+      <div className="movie-card-title">
+        <h2>lorem { /*movieData.original_title*/}</h2>
       </div>
-      <div>{movieData.original_title}</div>
-      <div>{movieData.release_date}</div>
+      <div className="movie-card-image">
+         {/*<img src={'https://image.tmdb.org/t/p/w185'+movieData.poster_path}></img> */}
+         <img src="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?v=1530129081"></img>
+         
+      </div>
+      <div className="movie-card-date">Release date {movieData.release_date}</div>
     </div>
   );
 }
 
 function MovieList({ data }) {
   return (
-    <div>
+    <div className="movielist-ctn">
       {data && data.results && data.results.length > 0 ? (
-        data.results.map(movie => <Movie movieData={movie} />)
+        data.results.map((movie,index) => <Movie key={movie+index} movieData={movie} />)
       ) : (
-        <div>22</div>
+        ""
       )}
     </div>
   );
@@ -38,6 +45,12 @@ class Movies extends React.Component {
     };
   }
 
+  shouldComponentUpdate(nextProps, nextState)
+  {
+    this.handleGetMovies()
+    return true
+  }
+
   componentDidMount()
   {
     this.handleGetMovies()
@@ -45,7 +58,6 @@ class Movies extends React.Component {
 
   static getDerivedStateFromProps(props,state)
   {
-      console.log(state.type)
     if (props.type !== state.type) {
         return { 
                     type: props.type ,
@@ -67,18 +79,15 @@ class Movies extends React.Component {
       }
       if (props.searchQuery !== state.searchQuery) {
         return { 
-            
                     type: props.type || "",
                     genre: props.genre || "",
                     searchQuery: props.searchQuery,
                     dataRange : props.dataRange || "",
                     moviesData: {}
-                
                 }
       }
       if (props.dateRange !== state.dateRange) {
         return { 
-                    
                     type: props.type || "",
                     genre: props.genre || "",
                     searchQuery: props.searchQuery || "",
@@ -93,6 +102,7 @@ class Movies extends React.Component {
   
 
   handleGetMovies() {
+    
     let _self = this;
     let searchURL = "";
     //https://developers.themoviedb.org/3/discover/movie-discover
@@ -108,9 +118,12 @@ class Movies extends React.Component {
           return response.json();
         })
         .then(function(data) {
+
+          if(JSON.stringify(_self.state.moviesData) != JSON.stringify(data))
           _self.setState({
             moviesData: data
           });
+
         })
         .catch(function(error) {
           console.log(error);
