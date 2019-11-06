@@ -5,11 +5,17 @@
     grid-template-columns: repeat(6,1fr);
     grid-gap: 15px;
 
-    @media (max-width: 70em) {
+    @media (max-width: 85em) {
         grid-template-columns: repeat(5,1fr);
     }
-    @media (max-width: 50em) {
+    @media (max-width: 70em) {
+        grid-template-columns: repeat(4,1fr);
+    }
+    @media (max-width: 64em) {
         grid-template-columns: repeat(3,1fr);
+    }
+    @media (max-width: 50em) {
+        grid-template-columns: repeat(2,1fr);
     }
     @media (max-width: 37.5em) {
         grid-template-columns: repeat(1,1fr);

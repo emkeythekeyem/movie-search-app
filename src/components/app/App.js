@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import logo from "../../assets/images/logo.svg";
+import React, { useState } from "react";
 import "./App.scss";
 import Genre from "../genre/Genre";
 import Movies from "../movies/Movies";
@@ -14,8 +13,7 @@ export default function App(props) {
 
 
   function handleSelectType(type) {
-    console.log(type)
-    //setType(type);
+    setType(type);
   }
 
   function handleSelectGenre(genre)
@@ -25,7 +23,6 @@ export default function App(props) {
 
   function handleSearchQuery(searchQuery)
   {
-    console.log(searchQuery)
     setSearchQuery(searchQuery)
   }
 

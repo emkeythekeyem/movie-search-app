@@ -1,11 +1,20 @@
 import React from "react";
 
-class DateFilter extends React.Component {
-    render() {
-        return (
-          <div></div>
-        );
-      }
-}
+const year = new Date().getFullYear();
+const years = Array.from(new Array(100), (val, index) => year - index);
 
-export default DateFilter;
+export default function DateFilter() {
+  return (
+    <div>
+      <select>
+        {years.map((year, index) => {
+          return (
+            <option key={`year${index}`} value={year}>
+              {year}
+            </option>
+          );
+        })}
+      </select>
+    </div>
+  );
+}

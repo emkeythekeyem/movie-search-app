@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-export default function Genre(props) {
-  const [type, setType] = useState("movie");
+export default function Genre() {
   const [genre, setGenre] = useState("All");
   const [genres, setGenres] = useState([]);
-
 
   useEffect(() => {
     async function fetchGenres(){
@@ -22,15 +20,17 @@ export default function Genre(props) {
           console.log(error);
         }
     }
+
+    if(genres.length < 1)
     fetchGenres();
   });
 
-  function handleSelectType(e) {
+  function handleSelectGenre(e) {
     setGenre(e.target.value);
   }
 
   return (
-    <select onChange={handleSelectType} value={genre}>
+    <select onChange={handleSelectGenre} value={genre}>
       <option value="All">All</option>
       {genres.length > 0
         ? genres.map((genre, index) => (
